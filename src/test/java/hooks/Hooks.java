@@ -3,22 +3,22 @@ package hooks;
 import base.DriverFactory;
 import io.cucumber.java.After;
 import io.cucumber.java.Before;
-import io.cucumber.java.Scenario;
 import org.openqa.selenium.WebDriver;
+import utils.conFigReader;
 
 public class Hooks {
+
+
     private WebDriver driver;
 
     @Before
     public void setup() {
-        // You can make this configurable via config file
-        driver = DriverFactory.initDriver("chrome"); // or "firefox"
+        driver = DriverFactory.initDriver();
+        driver.get(conFigReader.get("base.url"));
     }
 
     @After
-    public void tearDown(Scenario scenario) {
-        if (driver != null) {
-            driver.quit();
-        }
+    public void tearDown() {
+        DriverFactory.quitDriver();
     }
 }

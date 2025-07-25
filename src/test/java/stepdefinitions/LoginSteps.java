@@ -2,23 +2,34 @@ package stepdefinitions;
 
 import base.DriverFactory;
 import io.cucumber.java.en.*;
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
+import org.testng.Assert;
 import pages.LoginPage;
 
 public class LoginSteps {
-    private LoginPage loginPage = new LoginPage(DriverFactory.getDriver());
+    private WebDriver driver = DriverFactory.getDriver();
+    private LoginPage loginPage = new LoginPage(driver);
 
     @Given("user is on login page")
     public void userOnLoginPage() {
-        DriverFactory.getDriver().get("https://example.com/login");
+        String currentUrl = driver.getCurrentUrl();
+        Assert.assertTrue(currentUrl.contains("/login"),
+                "Expected to be on login page, but was: " + currentUrl);
     }
 
     @When("user enters username {string} and password {string}")
-    public void userEntersCredentials(String user, String pass) {
-        loginPage.login(user, pass);
+    public void userEntersCredentials(String username, String password) {
+        loginPage.login(username, password);
     }
 
     @Then("user should be logged in")
     public void userShouldBeLoggedIn() {
-        // validation logic here
+        String currentUrl = driver.getCurrentUrl();
+        Assert.assertTrue(currentUrl.contains("/dashboard"),
+                "Expected to be on dashboard page, but was: " + currentUrl);
+
+        boolean isWelcomeVisible = driver.findElement(By.xpath("//h6[normalize-space()='Dashboard']")).isDisplayed();
+        Assert.assertTrue(isWelcomeVisible, "Dashboard message not visible after login.");
     }
 }

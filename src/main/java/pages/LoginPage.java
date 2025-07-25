@@ -2,6 +2,9 @@ package pages;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.FindBy;
+import org.openqa.selenium.support.PageFactory;
 import utils.WaitUtils;
 
 public class LoginPage {
@@ -9,15 +12,23 @@ public class LoginPage {
 
     public LoginPage(WebDriver driver) {
         this.driver = driver;
+        PageFactory.initElements(driver,this);
     }
 
-    private final By username = By.id("username");
-    private final By password = By.id("password");
-    private final By loginBtn = By.id("login");
+    // WebElements using @FindBy
+    @FindBy(xpath = "//input[@placeholder='Username']")
+    private WebElement usernameInput;
 
+    @FindBy(xpath = "//input[@placeholder='Password']")
+    private WebElement passwordInput;
+
+    @FindBy(xpath = "//button[normalize-space()='Login']")
+    private WebElement loginButton;
+
+    // Login method
     public void login(String user, String pass) {
-        WaitUtils.waitForElementVisible(driver, username, 10).sendKeys(user);
-        driver.findElement(password).sendKeys(pass);
-        driver.findElement(loginBtn).click();
+        usernameInput.sendKeys(user);
+        passwordInput.sendKeys(pass);
+        loginButton.click();
     }
 }
