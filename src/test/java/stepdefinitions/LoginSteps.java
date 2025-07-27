@@ -32,4 +32,9 @@ public class LoginSteps {
         boolean isWelcomeVisible = driver.findElement(By.xpath("//h6[normalize-space()='Dashboard']")).isDisplayed();
         Assert.assertTrue(isWelcomeVisible, "Dashboard message not visible after login.");
     }
+
+    @Then("user should be {string}")
+    public void user_should_be(String expectedStatus) {
+        loginPage.verifyLoginStatus(expectedStatus);
+    }
 }
