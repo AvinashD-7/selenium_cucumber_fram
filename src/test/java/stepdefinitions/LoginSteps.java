@@ -37,4 +37,16 @@ public class LoginSteps {
     public void user_should_be(String expectedStatus) {
         loginPage.verifyLoginStatus(expectedStatus);
     }
+
+    @Then("I should see the error message {string} below the username field")
+    public void i_should_see_error_message_below_username(String expectedMessage) {
+        String actual = loginPage.getUsernameError();
+        Assert.assertEquals(expectedMessage, actual);
+    }
+
+    @Then("I should see the error message {string} below the password field")
+    public void i_should_see_error_message_below_password(String expectedMessage) {
+        String actual = loginPage.getPasswordError();
+        Assert.assertEquals(expectedMessage, actual);
+    }
 }

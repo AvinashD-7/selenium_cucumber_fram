@@ -32,10 +32,20 @@ public class LoginPage {
     @FindBy(xpath = "//h6[normalize-space()='Dashboard']")
     private WebElement dashboard;
 
+    @FindBy(xpath = "//input[@name='username']/ancestor::div[contains(@class, 'oxd-input-group')]//span[text()='Required']")
+    private WebElement usernamerequired;
+
+    @FindBy(xpath = "//input[@type='password']/ancestor::div[contains(@class, 'oxd-input-group')]//span[text()='Required']")
+    private WebElement passwordrequired;
+
     // Login method
     public void login(String user, String pass) {
-        usernameInput.sendKeys(user);
-        passwordInput.sendKeys(pass);
+        if (user != null) {
+            usernameInput.sendKeys(user);
+        }
+        if (pass != null) {
+            passwordInput.sendKeys(pass);
+        }
         loginButton.click();
     }
 
@@ -54,5 +64,15 @@ public class LoginPage {
         } else {
             throw new IllegalArgumentException("Unknown login result: " + expectedStatus);
         }
+    }
+
+    public String getUsernameError() {
+        WebElement error = usernamerequired;
+        return error.isDisplayed() ? error.getText() : "";
+    }
+
+    public String getPasswordError() {
+        WebElement error = passwordrequired;
+        return error.isDisplayed() ? error.getText() : "";
     }
 }
